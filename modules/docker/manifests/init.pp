@@ -28,6 +28,7 @@ class docker {
     file { "/etc/apt/sources.list.d/docker.list":
         content => "deb [arch=amd64 signed-by=${docker_keyring}] https://download.docker.com/linux/debian $lsbdistcodename stable",
         notify => Exec['apt update'],
+        replace => false,
     }
 
     package { $docker_pkgs: }
