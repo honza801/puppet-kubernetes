@@ -32,4 +32,9 @@ class docker {
     }
 
     package { $docker_pkgs: }
+
+    file { '/etc/docker/daemon.json':
+        source => 'puppet:///modules/docker/daemon.json',
+        owner => 'root', group => 'root', mode => '0644',
+    }
 }
