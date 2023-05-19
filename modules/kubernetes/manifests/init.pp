@@ -1,5 +1,6 @@
 class kubernetes {
-    include docker
+    include apt
+    include docker::containerd
     include sysctl
 
     $prereqs = [
@@ -20,14 +21,11 @@ class kubernetes {
         content => "br_netfilter",
     }
     file { "/etc/sysctl.d/k8s.conf":
-        content => [
-            "net.bridge.bridge-nf-call-ip6tables = 1",
-            "net.bridge.bridge-nf-call-iptables = 1",
-        ],
+        source => 'puppet:///modules/kubernetes/sysctl.k8s.conf',
         notify => Exec["sysctl update"],
     }
 
-    $kube_keyring = "/usr/share/keyrings/kubernetes-archive-keyring.gpg"
+    $kube_keyring = "/etc/apt/keyrings/kubernetes-archive-keyring.gpg"
     file { $kube_keyring:
         source => "https://packages.cloud.google.com/apt/doc/apt-key.gpg",
     }
@@ -37,6 +35,6 @@ class kubernetes {
         notify => Exec['apt update'],
     }
 
-    package { $kube_packages: }
+    package { $kube_packages: ensure => '1.27.1-00' }
 
 }
