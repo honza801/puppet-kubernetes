@@ -26,15 +26,23 @@ class kubernetes {
     }
 
     $kube_keyring = "/etc/apt/keyrings/kubernetes-archive-keyring.gpg"
-    file { $kube_keyring:
+    file { "$kube_keyring.armor":
         source => "https://packages.cloud.google.com/apt/doc/apt-key.gpg",
+    }~>
+    exec { "/usr/bin/gpg --dearmor --batch --yes -o $kube_keyring $kube_keyring.armor":
+        refreshonly => true,
+        notify => Exec['apt update'],
     }
+
 
     file { "/etc/apt/sources.list.d/kubernetes.list":
         content => "deb [signed-by=${kube_keyring}] https://apt.kubernetes.io/ kubernetes-xenial main",
         notify => Exec['apt update'],
     }
 
-    package { $kube_packages: ensure => '1.27.1-00' }
+    package { $kube_packages:
+        ensure => '1.27.1-00',
+        mark => hold,
+    }
 
 }

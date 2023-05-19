@@ -20,15 +20,15 @@ class docker {
         ensure => directory,
         mode => '0755',
     }->
-    file { $docker_gpg:
+    file { "$docker_gpg.armor":
         source => $docker_gpg_source,
         mode => '0644',
     }
-    #->
-    #exec { "/usr/bin/gpg --dearmor -o $docker_keyring $docker_gpg":
-    #    creates => $docker_keyring,
-    #    notify => Exec['apt update'],
-    #}
+    ~>
+    exec { "/usr/bin/gpg --dearmor --batch --yes -o $docker_gpg $docker_gpg.armor":
+        refreshonly => true,
+        notify => Exec['apt update'],
+    }
     file { "/etc/apt/sources.list.d/docker.list":
         content => "deb [arch=amd64 signed-by=${docker_gpg}] https://download.docker.com/linux/${distro} $lsbdistcodename stable",
         notify => Exec['apt update'],
