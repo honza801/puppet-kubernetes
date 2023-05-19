@@ -1,4 +1,4 @@
 ```
 apt install -y puppet
-puppet apply --modulepath . -e "include role" -t
+puppet apply --modulepath modules/ -e "include role" -t
 ```
