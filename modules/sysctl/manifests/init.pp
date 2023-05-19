@@ -1,7 +1,7 @@
 class sysctl {
     package { 'procps': }->
     exec { "sysctl update":
-        command => "/usr/bin/sysctl --system",
+        command => "/usr/sbin/sysctl --system",
         refreshonly => true,
     }
 }
