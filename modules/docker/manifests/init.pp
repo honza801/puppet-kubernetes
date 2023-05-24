@@ -54,7 +54,9 @@ class docker::ce inherits docker {
 class docker::containerd inherits docker {
     $containerd_config = '/etc/containerd/config.toml'
 
-    package { 'containerd.io': }->
+    package { [ 'containerd.io', 'cri-tools' ]:
+        mark => hold,
+    }->
     exec { "/usr/bin/containerd config default > $containerd_config":
         creates => $containerd_config,
         notify => Service['containerd'],
