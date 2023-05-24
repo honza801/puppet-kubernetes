@@ -7,6 +7,7 @@ class kubernetes {
         "apt-transport-https",
         #"ca-certificates",
         #"curl",
+        'gpg',
     ]
 
     $kube_packages = [
@@ -18,10 +19,12 @@ class kubernetes {
     package { $prereqs: }
 
     file { "/etc/modules-load.d/k8s.conf":
-        content => "br_netfilter",
+        source => 'puppet:///modules/kubernetes/modules.k8s.conf',
+        owner => 'root', group => 'root', mode => '0644',
     }
     file { "/etc/sysctl.d/k8s.conf":
         source => 'puppet:///modules/kubernetes/sysctl.k8s.conf',
+        owner => 'root', group => 'root', mode => '0644',
         notify => Exec["sysctl update"],
     }
 
@@ -41,7 +44,7 @@ class kubernetes {
     }
 
     package { $kube_packages:
-        ensure => '1.27.1-00',
+        ensure => '1.27.2-00',
         mark => hold,
     }
 
