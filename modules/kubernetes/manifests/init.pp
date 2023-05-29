@@ -1,4 +1,5 @@
 class kubernetes {
+    include common
     include apt
     include docker::containerd
     include sysctl
