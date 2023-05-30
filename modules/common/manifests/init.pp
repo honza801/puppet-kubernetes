@@ -9,4 +9,5 @@ class common {
     file { '/root/.vimrc':
         source => 'puppet:///modules/common/vimrc',
     }
+    file { '/etc/localtime': target => '/usr/share/zoneinfo/Europe/Prague' }
 }
