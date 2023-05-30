@@ -11,4 +11,5 @@ alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 
 export KUBECONFIG=/etc/kubernetes/admin.conf
-source <(kubectl completion bash)
+
+command -v kubectl >/dev/null && source <(kubectl completion bash)
