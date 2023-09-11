@@ -57,8 +57,10 @@ class docker::containerd inherits docker {
     package { [ 'containerd.io', 'cri-tools' ]:
         mark => hold,
     }->
-    exec { "/usr/bin/containerd config default > $containerd_config":
-        creates => $containerd_config,
+    # /usr/bin/containerd config default
+    file { $containerd_config:
+        souce => 'puppet:///modules/docker/config.toml'
+        owner => 'root', group => 'root', mode => '0644',
         notify => Service['containerd'],
     }
 
