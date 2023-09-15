@@ -59,7 +59,7 @@ class docker::containerd inherits docker {
     }->
     # /usr/bin/containerd config default
     file { $containerd_config:
-        souce => 'puppet:///modules/docker/config.toml'
+        source => 'puppet:///modules/docker/config.toml',
         owner => 'root', group => 'root', mode => '0644',
         notify => Service['containerd'],
     }
