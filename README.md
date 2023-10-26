@@ -1,7 +1,7 @@
 ### How to use
 
 ```
-apt install -y puppet gpg
+apt install -y puppet gpg git
 puppet apply --modulepath modules/ -e "include role" -t
 ```
 
