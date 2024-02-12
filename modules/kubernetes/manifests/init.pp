@@ -45,7 +45,7 @@ class kubernetes {
     }
 
     package { $kube_packages:
-        ensure => '1.27.2-00',
+        ensure => '1.28.1-00',
         mark => hold,
     }
 
