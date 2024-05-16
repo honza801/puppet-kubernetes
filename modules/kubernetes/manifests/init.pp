@@ -4,6 +4,9 @@ class kubernetes {
     include docker::containerd
     include sysctl
 
+    $minor_version = "1.29"
+    $patch_version = "5"
+
     $prereqs = [
         "apt-transport-https",
         #"ca-certificates",
@@ -29,9 +32,9 @@ class kubernetes {
         notify => Exec["sysctl update"],
     }
 
-    $kube_keyring = "/etc/apt/keyrings/kubernetes-archive-keyring.gpg"
+    $kube_keyring = "/etc/apt/keyrings/kubernetes-apt-keyring.gpg"
     file { "$kube_keyring.armor":
-        source => "https://packages.cloud.google.com/apt/doc/apt-key.gpg",
+        source => "https://pkgs.k8s.io/core:/stable:/v${minor_version}/deb/Release.key",
     }~>
     exec { "/usr/bin/gpg --dearmor --batch --yes -o $kube_keyring $kube_keyring.armor":
         refreshonly => true,
@@ -40,12 +43,12 @@ class kubernetes {
 
 
     file { "/etc/apt/sources.list.d/kubernetes.list":
-        content => "deb [signed-by=${kube_keyring}] https://apt.kubernetes.io/ kubernetes-xenial main",
+        content => "deb [signed-by=${kube_keyring}] https://pkgs.k8s.io/core:/stable:/v${minor_version}/deb/ /",
         notify => Exec['apt update'],
     }
 
     package { $kube_packages:
-        ensure => '1.28.1-00',
+        ensure => "${minor_version}.${patch_version}-00",
         mark => hold,
     }
 
