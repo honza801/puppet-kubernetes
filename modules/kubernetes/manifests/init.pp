@@ -4,7 +4,7 @@ class kubernetes {
     include sysctl
 
     $minor_version = "1.29"
-    $patch_version = "5"
+    $patch_version = "8"
 
     $prereqs = [
         "apt-transport-https",
@@ -36,7 +36,7 @@ class kubernetes {
     }
 
     package { $kube_packages:
-        ensure => "${minor_version}.${patch_version}-00",
+        ensure => "${minor_version}.${patch_version}-1.1",
         mark => hold,
     }
 
