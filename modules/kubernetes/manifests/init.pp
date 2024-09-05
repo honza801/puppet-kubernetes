@@ -3,8 +3,8 @@ class kubernetes {
     include docker::containerd
     include sysctl
 
-    $minor_version = "1.29"
-    $patch_version = "8"
+    $minor_version = "1.30"
+    #$patch_version = "4"
 
     $prereqs = [
         "apt-transport-https",
@@ -36,7 +36,8 @@ class kubernetes {
     }
 
     package { $kube_packages:
-        ensure => "${minor_version}.${patch_version}-1.1",
+        #ensure => "${minor_version}.${patch_version}-1.1",
+        ensure => latest,
         mark => hold,
     }
 
