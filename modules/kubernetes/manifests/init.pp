@@ -37,7 +37,7 @@ class kubernetes {
 
     package { $kube_packages:
         #ensure => "${minor_version}.${patch_version}-1.1",
-        ensure => latest,
+        ensure => present,
         mark => hold,
     }
 
